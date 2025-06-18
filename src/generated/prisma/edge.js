@@ -141,6 +141,10 @@ const config = {
         "fromEnvVar": null,
         "value": "debian-openssl-1.1.x",
         "native": true
+      },
+      {
+        "fromEnvVar": null,
+        "value": "debian-openssl-3.0.x"
       }
     ],
     "previewFeatures": [],
@@ -148,7 +152,7 @@ const config = {
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": "../../../.env",
+    "rootEnvPath": null,
     "schemaEnvPath": "../../../.env"
   },
   "relativePath": "../../../prisma",
@@ -167,8 +171,8 @@ const config = {
       }
     }
   },
-  "inlineSchema": "datasource db {\n  provider = \"mongodb\"\n  url      = env(\"DATABASE_URL\")\n}\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generated/prisma\"\n}\n\nmodel Course {\n  id          String  @id @default(auto()) @map(\"_id\") @db.ObjectId\n  slug        String  @unique\n  title       String?\n  description String\n  image       String\n\n  @@map(\"courses\")\n}\n\nmodel Video {\n  id          String  @id @default(auto()) @map(\"_id\") @db.ObjectId\n  slug        String  @unique\n  title       String?\n  description String\n  image       String\n  video       String\n  order       Int\n  course      String  @db.ObjectId\n\n  @@map(\"videos\")\n}\n",
-  "inlineSchemaHash": "514084c8ea89c6ba840253b0ee4418ac143048407d8b8f444deac5dbbe44f078",
+  "inlineSchema": "datasource db {\n  provider = \"mongodb\"\n  url      = env(\"DATABASE_URL\")\n}\n\ngenerator client {\n  provider      = \"prisma-client-js\"\n  output        = \"../src/generated/prisma\"\n  binaryTargets = [\"native\", \"debian-openssl-3.0.x\"]\n}\n\nmodel Course {\n  id          String  @id @default(auto()) @map(\"_id\") @db.ObjectId\n  slug        String  @unique\n  title       String?\n  description String\n  image       String\n\n  @@map(\"courses\")\n}\n\nmodel Video {\n  id          String  @id @default(auto()) @map(\"_id\") @db.ObjectId\n  slug        String  @unique\n  title       String?\n  description String\n  image       String\n  video       String\n  order       Int\n  course      String  @db.ObjectId\n\n  @@map(\"videos\")\n}\n",
+  "inlineSchemaHash": "a6a8fde6272e764922e51ee59523abe850e4836fe2b8c1ebd6324e9e559b653e",
   "copyEngine": true
 }
 config.dirname = '/'
