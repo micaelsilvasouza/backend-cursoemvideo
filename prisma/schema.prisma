@@ -31,3 +31,29 @@ model Video {
 
   @@map("videos")
 }
+
+model User {
+  id            String  @id @default(auto()) @map("_id") @db.ObjectId
+  name          String
+  email         String @unique
+  password      String
+
+  @@map("users")
+}
+
+model UserCourse {
+  id            String  @id @default(auto()) @map("_id") @db.ObjectId
+  user          String @db.ObjectId
+  course        String @db.ObjectId
+  porcent       Float
+
+  @@map("user_courses")
+}
+
+model Certificate {
+  id            String  @id @default(auto()) @map("_id") @db.ObjectId
+  user          String @db.ObjectId
+  course        String @db.ObjectId
+
+  @@map("certificate")
+}

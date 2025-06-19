@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Testando o HTML</h1>
+    <script>
+        fetch("/user/validate/token", {
+            headers: {"Content-type": "application/json"},
+            method: "post",
+            body: JSON.stringify({token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NTM3YjdhNGRjYTkyYzQxOTQyMDAxNSIsIm5hbWUiOiJKb3PDqSBBbWFyYWwiLCJlbWFpbCI6Im1pY2FlbEBnbWFpbC5jb20iLCJwYXNzd29yZCI6IiQyYiQxMCRxQ1NSd281bVBaL3FqbUs4cEM5QlR1YTZzWG9FS09iVUwyOGpZREpHczlxbGVnanhVNkNxSyIsImlhdCI6MTc1MDMwMDQ1MiwiZXhwIjoxNzUwOTA1MjUyfQ.DMRY_LkzNTvqLUwC8BtQ-e3rIdTaifkg_ie-qWn99r4"})
+        }).then(async res =>{
+            const data = await res.json()
+
+            console.log(data)
+        })
+    </script>
+</body>
+</html>

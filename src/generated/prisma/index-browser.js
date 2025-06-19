@@ -132,6 +132,26 @@ exports.Prisma.VideoScalarFieldEnum = {
   course: 'course'
 };
 
+exports.Prisma.UserScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  email: 'email',
+  password: 'password'
+};
+
+exports.Prisma.UserCourseScalarFieldEnum = {
+  id: 'id',
+  user: 'user',
+  course: 'course',
+  porcent: 'porcent'
+};
+
+exports.Prisma.CertificateScalarFieldEnum = {
+  id: 'id',
+  user: 'user',
+  course: 'course'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -145,7 +165,10 @@ exports.Prisma.QueryMode = {
 
 exports.Prisma.ModelName = {
   Course: 'Course',
-  Video: 'Video'
+  Video: 'Video',
+  User: 'User',
+  UserCourse: 'UserCourse',
+  Certificate: 'Certificate'
 };
 
 /**
