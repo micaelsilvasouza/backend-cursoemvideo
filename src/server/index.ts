@@ -14,6 +14,15 @@ app.get("/courses", async (req, res)=>{
     res.json(courses)
 })
 
+//buscar todos os cursos
+app.get("/course/:courseslug", async (req, res)=>{
+    const courseslug = req.params.courseslug
+    const course = await prisma.course.findUnique({
+        where: {slug: courseslug}
+    })
+    res.json(course)
+})
+
 //buscar todos os videos de um curso
 app.get("/videos/:courseslug", async (req, res)=>{
     const courseslug = req.params.courseslug

@@ -130,7 +130,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/home/guest/Documentos/projetos/backend-cursoemvideo/src/generated/prisma",
+      "value": "C:\\Users\\Micael\\Documents\\backend-cursoemvideo\\src\\generated\\prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -139,16 +139,20 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "debian-openssl-1.1.x",
+        "value": "windows",
         "native": true
       },
       {
         "fromEnvVar": null,
         "value": "debian-openssl-3.0.x"
+      },
+      {
+        "fromEnvVar": null,
+        "value": "windows"
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "/home/guest/Documentos/projetos/backend-cursoemvideo/prisma/schema.prisma",
+    "sourceFilePath": "C:\\Users\\Micael\\Documents\\backend-cursoemvideo\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
@@ -171,8 +175,8 @@ const config = {
       }
     }
   },
-  "inlineSchema": "datasource db {\n  provider = \"mongodb\"\n  url      = env(\"DATABASE_URL\")\n}\n\ngenerator client {\n  provider      = \"prisma-client-js\"\n  output        = \"../src/generated/prisma\"\n  binaryTargets = [\"native\", \"debian-openssl-3.0.x\"]\n}\n\nmodel Course {\n  id          String  @id @default(auto()) @map(\"_id\") @db.ObjectId\n  slug        String  @unique\n  title       String?\n  description String\n  image       String\n\n  @@map(\"courses\")\n}\n\nmodel Video {\n  id          String  @id @default(auto()) @map(\"_id\") @db.ObjectId\n  slug        String  @unique\n  title       String?\n  description String\n  image       String\n  video       String\n  order       Int\n  course      String  @db.ObjectId\n\n  @@map(\"videos\")\n}\n",
-  "inlineSchemaHash": "a6a8fde6272e764922e51ee59523abe850e4836fe2b8c1ebd6324e9e559b653e",
+  "inlineSchema": "datasource db {\n  provider = \"mongodb\"\n  url      = env(\"DATABASE_URL\")\n}\n\ngenerator client {\n  provider      = \"prisma-client-js\"\n  output        = \"../src/generated/prisma\"\n  binaryTargets = [\"native\", \"debian-openssl-3.0.x\", \"windows\"]\n}\n\nmodel Course {\n  id          String  @id @default(auto()) @map(\"_id\") @db.ObjectId\n  slug        String  @unique\n  title       String?\n  description String\n  image       String\n\n  @@map(\"courses\")\n}\n\nmodel Video {\n  id          String  @id @default(auto()) @map(\"_id\") @db.ObjectId\n  slug        String  @unique\n  title       String?\n  description String\n  image       String\n  video       String\n  order       Int\n  course      String  @db.ObjectId\n\n  @@map(\"videos\")\n}\n",
+  "inlineSchemaHash": "c890716e386bdc2572ef2767f8adbf0766efbbfd5abf166295fa6a8a45921312",
   "copyEngine": true
 }
 config.dirname = '/'
