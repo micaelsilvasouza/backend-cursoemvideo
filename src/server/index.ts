@@ -4,6 +4,7 @@ import express from "express";
 import cors from "cors"
 
 import { createHash, compareHash } from "../encrypted";
+import { sendMail } from "../email"
 
 const prisma = new PrismaClient()
 const app = express()
@@ -18,7 +19,7 @@ app.use(express.json())
 
 //Rotas get
     //rota principal
-    app.get("/", (req, res)=>{
+    app.get("/", async (req, res)=>{
         res.sendFile(__dirname + "/index.html")
     })
 
@@ -100,6 +101,13 @@ app.use(express.json())
                 password: hash
             }
         })
+
+        //tentando enviar o email
+        try{
+            await sendMail(email,name)
+        }catch(err){
+            console.log(err)
+        }
 
         res.json({success: "registered", message: "Usuário cadastrado com sucesso."})
     })

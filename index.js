@@ -10,7 +10,7 @@ const transporter = nodemailer.createTransport({
 
 transporter.sendMail({
     from: "Micael <msdesenvolvedor@gmail.com>",
-    to: "filipealves@gmail.com",
+    to: "micael@email.com",
     subject: "Bem Vindo",
     html: createHtml("Micael")
 }).then(data=>console.log("Enviado: ",data)).catch(err=>console.log(err))
