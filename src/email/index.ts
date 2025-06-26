@@ -2,7 +2,7 @@ import nodemailer from "nodemailer"
 
 const auth = {
     user: "msdesenvolvedor@gmail.com",
-    pass: "faf" //woqm vbjc olij ncym
+    pass: "woqm vbjc olij ncym" //woqm vbjc olij ncym
 }
 
 const transporter = nodemailer.createTransport({
