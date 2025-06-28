@@ -1,4 +1,7 @@
 import nodemailer from "nodemailer"
+import {readFileSync} from "fs"
+
+type Type = "register" | "reset-password"
 
 const auth = {
     user: "msdesenvolvedor@gmail.com",
@@ -10,46 +13,32 @@ const transporter = nodemailer.createTransport({
     auth: auth
 })
 
-export async function sendMail(email:string, name: string) {
+export async function sendMail(type:Type, email:string, name: string) {
     const info = transporter.sendMail({
         from: "Clone Curso em Video <msdesenvolvedor@gmail.com>",
         to: email,
         subject: "Bem Vindo",
-        html: createHtml(name)
+        html: createHtml(type, email, name)
     })
     return info
 }
 
-function createHtml(name:string) {
-    return `<html>
-    <body style="
-        margin: 0;
-        padding: 0;
-        font-family: sans-serif;
-        text-align: center;
-    ">
-        <div style="
-            padding: 100px 10px;
-            font-size: 3em;
-            background: #2121ab;
-            color: white;
-        ">
-            <h1>Curso em Video</h1>
-        </div>
-        <div style="
-            font-size: 22px;
-            padding: 100px 30px;
-        ">
-            <h1>Bem vindo ${name}</h1>
-            <p>Olha pequeno gafanhoto seja bem vindo ao curso em video</p>
-        </div>
-        <div style="
-            padding: 50px 10px 10px 10px;
-            color: #2121ab;
-        ">
-            <p>@micaelsilva</p>
-            <p>@felipealves</p>
-        </div>
-</body>
-</html>`
+function createHtml(type: Type, email: string,name:string) {
+    switch (type) {
+        case "register":
+            return readFileSync(__dirname+"/tamplates-emails/register.html")
+            .toString("utf-8")
+            .replace("{{name}}", name)
+            .replace("{{email}}", email)
+    
+        case "reset-password":
+            return readFileSync(__dirname+"/tamplates-emails/reset-password.html")
+            .toString("utf-8")
+            .replace("{{name}}", name)
+            .replace("{{email}}", email)
+    
+        default:
+            break;
+    }
+    
 }

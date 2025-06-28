@@ -108,7 +108,7 @@ app.use(express.json())
     
             //tentando enviar o email
             try{
-                await sendMail(email,name)
+                await sendMail("register",email,name)
             }catch(err){
                 console.log("Email error: ",err)
             }
@@ -215,7 +215,7 @@ app.use(express.json())
 
                 //tentando enviar o email
                 try{
-                    await sendMail(add.email, add.name)
+                    await sendMail("register",add.email, add.name)
                 }catch(err){
                     console.log("Email error: ",err)
                 }
