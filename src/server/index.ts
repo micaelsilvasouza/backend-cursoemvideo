@@ -1,5 +1,6 @@
 import { PrismaClient } from "../generated/prisma";
 import {sign, verify} from "jsonwebtoken"
+import {OAuth2Client} from "google-auth-library"
 import express from "express";
 import cors from "cors"
 
@@ -7,6 +8,7 @@ import { createHash, compareHash } from "../encrypted";
 import { sendMail } from "../email"
 
 const prisma = new PrismaClient()
+const client = new OAuth2Client("593215396622-f6615g28imqq6m9c4943rvg5e11nmv6q.apps.googleusercontent.com")
 const app = express()
 
 const secret = "2544b58cbb102f21" //segredo pro token
@@ -94,22 +96,29 @@ app.use(express.json())
 
         const hash = await createHash(password)
 
-        const register = await prisma.user.create({
-            data: {
-                name: name,
-                email: email,
-                password: hash
+        try {
+            const register = await prisma.user.create({
+                data: {
+                    name: name,
+                    email: email,
+                    password: hash,
+                    provider: ["root"]
+                }
+            })
+    
+            //tentando enviar o email
+            try{
+                await sendMail(email,name)
+            }catch(err){
+                console.log("Email error: ",err)
             }
-        })
-
-        //tentando enviar o email
-        try{
-            await sendMail(email,name)
-        }catch(err){
-            console.log(err)
+    
+            res.json({success: "registered", message: "Usuário cadastrado com sucesso."})
+        } catch (error) {
+            console.log(error)
+            res.json({error: error, message: "Erro ao registrar usuário"})
         }
 
-        res.json({success: "registered", message: "Usuário cadastrado com sucesso."})
     })
 
     //Login
@@ -133,8 +142,13 @@ app.use(express.json())
         //buscando dados
         const user = await prisma.user.findUnique({where: {email: email}})
 
-        if(user == null || user == undefined){
+        if((user == null || user == undefined)){
             res.json({error: "dont registered", message: "Email não registrado"})
+            return
+        }
+
+        if(!user.provider.includes("root")){
+            res.json({error: "dont has provider root", message: "Email não possui registro padrão"})
             return
         }
         
@@ -145,6 +159,92 @@ app.use(express.json())
             res.json({error: "falied login", message: "Senha incorreta"})
         }
 
+    })
+
+    //login com o google
+    app.post("/user/login/google", async (req, res)=>{
+        const {googletoken} = req.body
+        let payload
+        let success: string = "google login successful"
+        let message: string = "Login com o google bem sucedido"
+
+        //verificando o tipo do token recebido
+        if(typeof googletoken != "string"){
+            res.json({error: "Invalid Token", message: "Token inválido"})
+            return
+        }
+
+        //verificando token
+        try {
+            const ticket = await client.verifyIdToken({
+                idToken: googletoken, 
+                audience: "593215396622-f6615g28imqq6m9c4943rvg5e11nmv6q.apps.googleusercontent.com"
+            })
+
+            payload = ticket.getPayload()
+        } catch (error) {
+            console.log(error)
+            res.json({error: "invalid token signature", message: "Assinatura de token inválida"})
+            return
+        }
+        
+        //Caso o email não seja verificado
+        if(!payload?.email_verified){
+            res.json({error: "email not verified", message: "Email não verificado"})
+            return
+        }
+
+        //buscando email no banco de dados
+        let register = await prisma.user.findUnique({where: {email: payload.email}})
+
+        //Caso necessite salvar no dados
+        if((payload.email && payload.name) && !register){ 
+            try {
+                const add = await prisma.user.create({
+                    data: {
+                        email: payload.email,
+                        name: payload.name,
+                        password: "",
+                        provider: ["google"]
+                    }
+                })
+                
+                register = add
+                success = "google-created account"
+                message = "Conta criada com o Google"
+
+                //tentando enviar o email
+                try{
+                    await sendMail(add.email, add.name)
+                }catch(err){
+                    console.log("Email error: ",err)
+                }
+            } catch (error) {
+                console.log(error)
+                res.json({error: error, message: "Erro ao registrar usuário"})
+            }
+        }
+        
+        //Caso necessite adicionar novo provedor
+        if(payload.email && register && !register?.provider.includes("google")){ 
+            register?.provider.push("google")
+            
+            try{
+                const upp = await prisma.user.update({
+                    where: {email: payload.email}, 
+                    data: {provider: register?.provider}
+                })
+                success = "provider added"
+                message = "Provedor adicionado"
+            }catch (err){
+                console.log(err)
+                res.json({error: err, message: "provedor não adicionado"})
+            }
+        }
+
+        //gerando token e enviado respostas de sucessos
+        const token = sign({id: register?.id, email: register?.email, name: register?.name}, secret, {expiresIn: "7d"})
+        res.json({success: success, message: message, token: token})
     })
 
     //validar token

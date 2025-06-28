@@ -3147,6 +3147,7 @@ export namespace Prisma {
     name: number
     email: number
     password: number
+    provider: number
     _all: number
   }
 
@@ -3170,6 +3171,7 @@ export namespace Prisma {
     name?: true
     email?: true
     password?: true
+    provider?: true
     _all?: true
   }
 
@@ -3250,6 +3252,7 @@ export namespace Prisma {
     name: string
     email: string
     password: string
+    provider: string[]
     _count: UserCountAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
@@ -3274,6 +3277,7 @@ export namespace Prisma {
     name?: boolean
     email?: boolean
     password?: boolean
+    provider?: boolean
   }, ExtArgs["result"]["user"]>
 
 
@@ -3283,9 +3287,10 @@ export namespace Prisma {
     name?: boolean
     email?: boolean
     password?: boolean
+    provider?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "password", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "password" | "provider", ExtArgs["result"]["user"]>
 
   export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "User"
@@ -3295,6 +3300,7 @@ export namespace Prisma {
       name: string
       email: string
       password: string
+      provider: string[]
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -3691,6 +3697,7 @@ export namespace Prisma {
     readonly name: FieldRef<"User", 'String'>
     readonly email: FieldRef<"User", 'String'>
     readonly password: FieldRef<"User", 'String'>
+    readonly provider: FieldRef<"User", 'String[]'>
   }
     
 
@@ -5937,7 +5944,8 @@ export namespace Prisma {
     id: 'id',
     name: 'name',
     email: 'email',
-    password: 'password'
+    password: 'password',
+    provider: 'provider'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -6157,6 +6165,7 @@ export namespace Prisma {
     name?: StringFilter<"User"> | string
     email?: StringFilter<"User"> | string
     password?: StringFilter<"User"> | string
+    provider?: StringNullableListFilter<"User">
   }
 
   export type UserOrderByWithRelationInput = {
@@ -6164,6 +6173,7 @@ export namespace Prisma {
     name?: SortOrder
     email?: SortOrder
     password?: SortOrder
+    provider?: SortOrder
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -6174,6 +6184,7 @@ export namespace Prisma {
     NOT?: UserWhereInput | UserWhereInput[]
     name?: StringFilter<"User"> | string
     password?: StringFilter<"User"> | string
+    provider?: StringNullableListFilter<"User">
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -6181,6 +6192,7 @@ export namespace Prisma {
     name?: SortOrder
     email?: SortOrder
     password?: SortOrder
+    provider?: SortOrder
     _count?: UserCountOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
     _min?: UserMinOrderByAggregateInput
@@ -6194,6 +6206,7 @@ export namespace Prisma {
     name?: StringWithAggregatesFilter<"User"> | string
     email?: StringWithAggregatesFilter<"User"> | string
     password?: StringWithAggregatesFilter<"User"> | string
+    provider?: StringNullableListFilter<"User">
   }
 
   export type UserCourseWhereInput = {
@@ -6417,6 +6430,7 @@ export namespace Prisma {
     name: string
     email: string
     password: string
+    provider?: UserCreateproviderInput | string[]
   }
 
   export type UserUncheckedCreateInput = {
@@ -6424,18 +6438,21 @@ export namespace Prisma {
     name: string
     email: string
     password: string
+    provider?: UserCreateproviderInput | string[]
   }
 
   export type UserUpdateInput = {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
+    provider?: UserUpdateproviderInput | string[]
   }
 
   export type UserUncheckedUpdateInput = {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
+    provider?: UserUpdateproviderInput | string[]
   }
 
   export type UserCreateManyInput = {
@@ -6443,18 +6460,21 @@ export namespace Prisma {
     name: string
     email: string
     password: string
+    provider?: UserCreateproviderInput | string[]
   }
 
   export type UserUpdateManyMutationInput = {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
+    provider?: UserUpdateproviderInput | string[]
   }
 
   export type UserUncheckedUpdateManyInput = {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
+    provider?: UserUpdateproviderInput | string[]
   }
 
   export type UserCourseCreateInput = {
@@ -6700,11 +6720,20 @@ export namespace Prisma {
     _max?: NestedIntFilter<$PrismaModel>
   }
 
+  export type StringNullableListFilter<$PrismaModel = never> = {
+    equals?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    has?: string | StringFieldRefInput<$PrismaModel> | null
+    hasEvery?: string[] | ListStringFieldRefInput<$PrismaModel>
+    hasSome?: string[] | ListStringFieldRefInput<$PrismaModel>
+    isEmpty?: boolean
+  }
+
   export type UserCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
     email?: SortOrder
     password?: SortOrder
+    provider?: SortOrder
   }
 
   export type UserMaxOrderByAggregateInput = {
@@ -6810,6 +6839,15 @@ export namespace Prisma {
     decrement?: number
     multiply?: number
     divide?: number
+  }
+
+  export type UserCreateproviderInput = {
+    set: string[]
+  }
+
+  export type UserUpdateproviderInput = {
+    set?: string[]
+    push?: string | string[]
   }
 
   export type FloatFieldUpdateOperationsInput = {
