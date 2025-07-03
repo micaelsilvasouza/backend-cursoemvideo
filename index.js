@@ -12,6 +12,7 @@ transporter.sendMail({
     from: "Micael <msdesenvolvedor@gmail.com>",
     to: "micael@email.com",
     subject: "Bem Vindo",
+    text: "Mandando email",
     html: createHtml("Micael")
 }).then(data=>console.log("Enviado: ",data)).catch(err=>console.log(err))
 
