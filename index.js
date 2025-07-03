@@ -14,7 +14,7 @@ transporter.sendMail({
     subject: "Bem Vindo",
     text: "Mandando email",
     html: createHtml("Micael")
-}).then(data=>console.log("Enviado: ",data)).catch(err=>console.log(err))
+}).then(data=>console.log("Comcluido: ",data)).catch(err=>console.log(err))
 
 
 function createHtml(name) {
