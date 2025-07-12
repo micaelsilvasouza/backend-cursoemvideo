@@ -10,11 +10,12 @@ generator client {
 }
 
 model Course {
-  id          String  @id @default(auto()) @map("_id") @db.ObjectId
-  slug        String  @unique
+  id          String       @id @default(auto()) @map("_id") @db.ObjectId
+  slug        String       @unique
   title       String?
   description String
   image       String
+  usercourses UserCourse[]
 
   @@map("courses")
 }
@@ -33,11 +34,12 @@ model Video {
 }
 
 model User {
-  id       String   @id @default(auto()) @map("_id") @db.ObjectId
-  name     String
-  email    String   @unique
-  password String
-  provider String[]
+  id          String       @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  email       String       @unique
+  password    String
+  provider    String[]
+  usercourses UserCourse[]
 
   @@map("users")
 }
@@ -47,6 +49,8 @@ model UserCourse {
   user    String @db.ObjectId
   course  String @db.ObjectId
   porcent Float
+  USER    User   @relation(fields: [user], references: [id])
+  COURSER Course @relation(fields: [course], references: [id])
 
   @@map("user_courses")
 }

@@ -7,32 +7,14 @@
     <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
-    <div id="g_id_onload"
-        data-client_id="593215396622-f6615g28imqq6m9c4943rvg5e11nmv6q.apps.googleusercontent.com" 
-        data-callback="handleCredentialResponse"
-        data-auto_prompt="false">
-    </div>
-
-    <div class="g_id_signin"
-        data-type="standard"
-        data-size="large"
-        data-theme="outline"
-        data-text="sign_in_with"
-        data-shape="rectangular"
-        data-logo_alignment="left">
-    </div>
     <script>
-        console.log("sucrilos")
-        /*fetch("/user/register", {method: "post", headers: {"Content-type": "application/json"}, body: JSON.stringify({email: "micael@email.com", name:"Roso Branco", password: "1"})}).then((data)=>{console.log(data)})*/
-        function handleCredentialResponse(response) {
-            // 'response' contém o token JWT (JSON Web Token) do Google
-            // Você enviará este token para o seu backend para verificação e autenticação
-            console.log("ID Token: " + response.credential);
-            fetch("/user/login/google", {
+        function addcourse() {
+            fetch("/user/course", {
                 method: "post", 
                 headers: {"Content-type": "application/json"}, 
                 body: JSON.stringify({
-                    googletoken: response.credential
+                    userid: "685fe16bd6e114c41bb217ca",
+                    courseid: "684d9e1df3b5999830f137fe"
                 })
             }).then(res=>res.json()).then((data)=>{console.log(data)})
         }

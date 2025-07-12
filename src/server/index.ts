@@ -266,6 +266,110 @@ app.use(express.json())
 
     })
 
+    //Adicionar curso de usuarios
+    app.post("/user/courses/add-course", async (req, res)=>{
+        const userid = req.body.userid
+        const courseid = req.body.courseid
+
+        if (typeof userid != "string" || typeof courseid != "string") {
+            res.json({error: "userid or courseid not provided", message: "Id de usuário ou id de courso não informados"})
+            return
+        }
+
+        try{
+            const userCourse = await prisma.userCourse.create({
+                data: {
+                    user: userid,
+                    course: courseid,
+                    porcent: 0
+                }
+            })
+
+            res.json({success: "registered", message: "Curso adcionado com sucesso."})
+
+        }catch(err){
+            res.json({error: err, message: "Erro ao salvar curso do usuario"})
+        }
+
+    })
+
+    //buscar cursos de usuarios
+    app.post("/user/courses", async (req, res)=>{
+        const userid = req.body.userid
+
+        if (typeof userid != "string") {
+            res.json({error: "userid not provided", message: "Id de usuário não informados"})
+            return
+        }
+
+        try{
+            const userCourses = await prisma.userCourse.findMany({
+                where: {user: userid},
+                include: { //inclui o join no curso
+                    COURSER: true
+                }
+            })
+
+            res.json({courses: userCourses})
+
+        }catch(err){
+            res.json({error: err, message: "Erro ao buscar cursos do usuario"})
+        }
+
+    })
+    
+    //buscar um curso de usuario
+    app.post("/user/course", async (req, res)=>{
+        const userid = req.body.userid
+        const courseid = req.body.courseid
+
+        if (typeof userid != "string" || typeof courseid != "string") {
+            res.json({error: "userid or courseid not provided", message: "Id de usuário ou id de courso não informados"})
+            return
+        }
+
+        try{
+            const userCourses = await prisma.userCourse.findFirst({
+                where: {course: courseid, user: userid},
+                include: { //inclui o join no curso
+                    COURSER: true
+                }
+            })
+
+            res.json({courses: userCourses})
+
+        }catch(err){
+            res.json({error: err, message: "Erro ao buscar curso do usuario"})
+        }
+
+    })
+
+    //atualizar porcentagem do curso de usuario
+    app.post("/user/courses/update-porcent", async (req, res)=>{
+        const userCourse = req.body.userCourse
+        const porcent = req.body.porcent
+
+        if (typeof userCourse != "string" || typeof porcent != "number") {
+            res.json({error: "userCourse or porcent not provided", message: "Curso de usuário ou valor da porcentagem não informados"})
+            return
+        }
+
+        try{
+            const update = await prisma.userCourse.update({
+                where: {id: userCourse},
+                data: {porcent: porcent}
+            })
+
+            console.log(update)
+
+            res.json({updating: true, courses: update})
+
+        }catch(err){
+            res.json({error: err, updating: false, message: "Erro ao altualiza a porcentagem do cursos do usuario"})
+        }
+
+    })
+    
 const PORT = process.env.PORT != undefined ? process.env.PORT : 8081
 
 app.listen(PORT, ()=>console.log("rodando na porta", PORT))
